@@ -1,16 +1,30 @@
 import React from 'react'  
-import EmpleadoAvatar from '../empleado-avatar'
-import {browserHistory} from 'react-router';
+import ReactDOM from 'react-dom';
+import BookLInfoDetail from '../../components/book-info-detail'
 
 
-class BookInfo extends React.Component {
-  
-  render() {
+class BookInfo extends React.Component {  
+  constructor(props) {
+    super(props);
+    this.handleClickShowComplete();
+  }
+
+  handleClickShowComplete () {
+   
+    $.getJSON("https://www.googleapis.com/books/v1/volumes/" + this.props.params.id, function(data){
+      let bookData = data.volumeInfo;
+      ReactDOM.render(<BookLInfoDetail info={ bookData } />, document.getElementById('application'))     
+    });
     
-    return(
-          <div>{this.props.info.description}</div>
-        )
-      }
-    }
+  }
+  render() {   
+    return (<div>
+        <div id="application"></div>
+      </div>
+    )
+  }
+}
 
-export default BookInfo  
+
+export default BookInfo;
+

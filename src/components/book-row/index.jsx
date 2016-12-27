@@ -1,5 +1,5 @@
 import React from 'react'  
-import EmpleadoAvatar from '../empleado-avatar'
+import BookAvatar from '../book-avatar'
 import {browserHistory} from 'react-router';
 
 
@@ -12,8 +12,14 @@ function Description(props) {
 
 
 
-class EmpleadoRow extends React.Component {
+class BookRow extends React.Component {
   
+  constructor(props) {
+    super(props);
+    //console.log(props)
+
+  }
+
   handleClickShowComplete (id, e) {
     console.log(id)
     browserHistory.push('/libro/' + id);
@@ -25,7 +31,7 @@ class EmpleadoRow extends React.Component {
     
     return(
           <li className="media">
-            <EmpleadoAvatar thumbnail={this.props.thumbnail} />
+            <BookAvatar thumbnail={this.props.thumbnail} />
             <div className="media-body">
               <h4 className="no-margin_bottom">{this.props.title}</h4>
               <p>
@@ -43,4 +49,4 @@ class EmpleadoRow extends React.Component {
       }
     }
 
-export default EmpleadoRow  
+export default BookRow  
