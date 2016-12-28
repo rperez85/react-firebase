@@ -21,7 +21,6 @@ class BookRow extends React.Component {
   }
 
   handleClickShowComplete (id, e) {
-    console.log(id)
     browserHistory.push('/libro/' + id);
     e.preventDefault();
   }
@@ -30,21 +29,23 @@ class BookRow extends React.Component {
   render() {
     
     return(
-          <li className="media">
+          <li className="row card">
             <BookAvatar thumbnail={this.props.thumbnail} />
-            <div className="media-body">
-              <h4 className="no-margin_bottom">{this.props.title}</h4>
-              <p>
-                <span className="label label-info">{this.props.authors ? 'autor: ' + this.props.authors.join(', ') : ''}</span>
-                <span className="label label-info">año: {this.props.publishedDate}</span>
-                <span className="label label-info">editorial: {this.props.publisher}</span>
-              </p>
-              <Description value={this.props.description} limit="120" />
-              <a href="#" onClick={() => this.handleClickShowComplete(this.props.id, event)}>Ver ficha completa</a>
+            <div className="col s10">
+              <h5>{this.props.title}</h5>
+              <div className="row">
+                <span className="badge left">{this.props.authors ? 'autor: ' + this.props.authors.join(', ') : ''}</span>
+                <span className="badge left">año: {this.props.publishedDate}</span>
+                <span className="badge left">editorial: {this.props.publisher}</span>
+              </div>
+              <Description value={this.props.description} limit="200" />
+              <a onClick={() => this.handleClickShowComplete(this.props.id, event)}>Ver ficha completa</a>
             
             </div>
-            <hr/>
+           
           </li>
+
+
         )
       }
     }

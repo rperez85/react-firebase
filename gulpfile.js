@@ -26,9 +26,6 @@ gulp.task('less', function () {
     .pipe(gulp.dest('./build/css'));
 });
 
-
-
-
 gulp.task('default', function() {  
   gulp.src('./assets/src/main.less')
     .pipe(less())

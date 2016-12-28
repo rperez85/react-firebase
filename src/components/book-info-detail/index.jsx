@@ -7,7 +7,20 @@ class BookInfoDetail extends React.Component {
   render() {
     
     return(
-          <div>{this.props.info.description}</div>
+	    	<div className="row">
+
+		      <div className="col s3">
+		       		
+		      </div>
+
+		      <div className="col s9">
+		        <ul>
+		        	<li>{this.props.info.description}</li>
+		        </ul>
+		      </div>
+
+		    </div>
+          
         )
       }
     }

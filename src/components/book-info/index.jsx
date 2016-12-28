@@ -8,7 +8,7 @@ class BookInfo extends React.Component {
     super(props);
     this.handleClickShowComplete();
   }
-
+  
   handleClickShowComplete () {
    
     $.getJSON("https://www.googleapis.com/books/v1/volumes/" + this.props.params.id, function(data){

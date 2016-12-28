@@ -10,7 +10,7 @@ class BookList extends React.Component {
 
   render() {
     return (
-      <ul className="media-list">
+      <ul>
         {
           this.props.listado.map((book) => {
           
