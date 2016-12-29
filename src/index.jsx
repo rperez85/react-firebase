@@ -1,12 +1,28 @@
 import React from 'react'  
 import ReactDOM from 'react-dom';
 import firebase from 'firebase';
+import { createStore } from 'redux';
 import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router'
 import BookMain from './components/book-main'
 import BookInfo from './components/book-info'
 import BookDestacados from './components/book-destacados'
 import UserButton from './components/forms/user-button'
 import BookSidebar from './components/book-sidebar'
+
+
+
+function userState(state, action) {
+  if (action.type === 'setState') {
+    return {
+      'isLogginIn': action.values.isLogginIn || false,
+      'user': action.values.user || null,
+      'books': action.values.books || []
+    }
+  }
+}
+
+window.store = createStore(userState)
+
 
 //firebase bbdd
 const config = {
@@ -16,6 +32,7 @@ const config = {
   storageBucket: "react-books.appspot.com",
   messagingSenderId: "734841775209"
 };
+
 
 firebase.initializeApp(config);
 
@@ -68,6 +85,10 @@ class App extends React.Component {
       // ...
       console.log(error)
     });*/
+
+
+   
+
   }
 
   componentWillMount () {
@@ -110,17 +131,8 @@ class App extends React.Component {
             isLoggedIn: true,
             user: user
           })
-
-          /*user.updateProfile({
-            displayName: "Jane Q. User"
-          }).then(function() {
-            // Update successful.
-          }, function(error) {
-            // An error happened.
-          });*/
-
-          //console.log(user.uid, user.getToken())
-
+          
+          store.dispatch({type: 'setState', values: {'isLogginIn': true, 'user': user}})
           //writeNewPost(user.uid, user.displayName,'imagen','titulo','cuerpo')
 
           const bookInfo = {
@@ -156,25 +168,11 @@ class App extends React.Component {
             isLoggedIn: false,
             user: null
           })
+
+        store.dispatch({type: 'setState', values: {'isLogginIn': false}})
       }
     }); 
 
-  
-      
-   
-
-    /*firebase.auth().createUserWithEmailAndPassword('rperezdelatorre2@gmail.com', 'pruebas1').catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // ...
-    });*/
-
-/*firebase.auth().signOut().then(function() {
-  // Sign-out successful.
-}, function(error) {
-  // An error happened.
-});*/
 
     //const nameRef = firebase.database().ref().child('username');
     //evento de firebase que se lanza cada vez que cambia un valor en la bbdd

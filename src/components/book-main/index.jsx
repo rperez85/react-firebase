@@ -22,6 +22,8 @@ class BookMain extends React.Component {
       orderBy: 'relevance' //newest 
     }
 
+    
+
   }
 
   //lanza el evnto una vez renderizado el componete
@@ -78,7 +80,6 @@ class BookMain extends React.Component {
           <div className="row">
             <div className="input-field col s6">
               <input placeholder="titulo, autor, referencia" id="searchText" type="text" className="validate" />
-
             </div>
             <div className="input-field col s1">
               <a className="waves-effect waves-light btn" onClick={() => this.handleClick()}>buscar</a>
@@ -88,8 +89,6 @@ class BookMain extends React.Component {
       </div>
 
       
-      
-
       <div className="row" id="application"></div>
       </div>
 	   )
