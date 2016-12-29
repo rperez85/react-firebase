@@ -58,7 +58,8 @@ class App extends React.Component {
 
     this.state = {
       isLoggedIn: false,
-      user: null
+      user: null,
+      books: []
     }
     /*firebase.auth().createUserWithEmailAndPassword('rperezdelatorre@gmail.com', 'pruebas1').catch(function(error) {
       // Handle Errors here.
@@ -70,7 +71,7 @@ class App extends React.Component {
   }
 
   componentWillMount () {
-
+    //Materialize.updateTextFields();
     /*firebase.auth().createUserWithEmailAndPassword('rperezdelatorre2@gmail.com', 'pruebas1').catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
@@ -90,24 +91,33 @@ class App extends React.Component {
 
 
     });*/
+
+
+    /*firebase.auth().signOut().then(function() {
+  // Sign-out successful.
+    }, function(error) {
+      // An error happened.
+    });
+    return;*/
+
     var self= this;
 
     //guardar libro
     firebase.auth().onAuthStateChanged(function(user) {
+
       if (user) {
-        self.setState({
+          self.setState({
             isLoggedIn: true,
             user: user
           })
 
-          user.updateProfile({
-            displayName: "Jane Q. User",
-            photoURL: "https://example.com/jane-q-user/profile.jpg"
+          /*user.updateProfile({
+            displayName: "Jane Q. User"
           }).then(function() {
             // Update successful.
           }, function(error) {
             // An error happened.
-          });
+          });*/
 
           //console.log(user.uid, user.getToken())
 
@@ -115,20 +125,37 @@ class App extends React.Component {
 
           const bookInfo = {
             id: '1324',
-            title: 'titulo libro',
+            title: 'titulo libro3',
             description: 'descripcion'
           }
 
           writeBookData(user.uid, bookInfo);
 
+
           //recuperar libros segun usuario
           var bookRef = firebase.database().ref('users/' + user.uid);
+          
           bookRef.on('value', function(snapshot) {
-            console.log(snapshot.val());
+            var arrBook = [];
+            var obj = snapshot.val();
+            var cont = 0;
+            
+            for (var value in obj) {
+              arrBook.push(obj[value]);
+              obj[value]['key'] = cont++;
+            }
+
+            self.setState({
+              books: arrBook
+            })
           });
 
       } else {
         // No user is signed in.
+        self.setState({
+            isLoggedIn: false,
+            user: null
+          })
       }
     }); 
 
@@ -167,6 +194,7 @@ class App extends React.Component {
   render() {
     const isLoggedIn = this.state.isLoggedIn;
     const userName = this.state.user;
+    const userBooks = this.state.books;
 
     return (
         <div>
@@ -190,7 +218,7 @@ class App extends React.Component {
           <div className="container">
             {this.props.children}
           </div>
-          <BookSidebar isLoggedIn={isLoggedIn}  />
+          <BookSidebar userBooks={userBooks} userName={userName} isLoggedIn={isLoggedIn}  />
         </div>
     )
   }
