@@ -42,6 +42,10 @@ class BookSidebar extends React.Component {
   	$('#registrationContainer').show();
   }
 
+  handleRemoveBookClick (userId, bookId) {
+  	firebase.database().ref('users/' + userId + '/' + bookId).remove();
+  }
+
   handleRegisterClick () {
   	const registrationEmail = $('#registrationEmail').val();
   	const registrationPassword = $('#registrationPassword').val();
@@ -68,8 +72,7 @@ class BookSidebar extends React.Component {
   }
 
   render() {
-	//const isLoggedIn = firebase.auth().currentUser;
-	
+	const currentUser = firebase.auth().currentUser;
 
     return (
     	 <div id="slide-out" className="side-nav" /*style={divStyle}*/>
@@ -85,7 +88,7 @@ class BookSidebar extends React.Component {
 			        {
 			          this.props.userBooks.map((book) => {
 			          	
-			          	return <li key={ book.key }>{book.title}</li>
+			          	return <li key={ book.key }>{book.title} <span onClick={() => this.handleRemoveBookClick(currentUser.uid, book.id)}>(borrar)</span></li>
 			         
 			          })
 			        }

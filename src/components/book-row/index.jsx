@@ -2,6 +2,10 @@ import React from 'react'
 import BookAvatar from '../book-avatar'
 import {browserHistory} from 'react-router';
 import { createStore } from 'redux';
+import firebase from 'firebase';
+import { store } from '../../actions'
+
+
 
 //helper
 function Description(props) {
@@ -11,45 +15,39 @@ function Description(props) {
   );
 }
 
+function writeBookData(userId, bookInfo) {
+  firebase.database().ref('users/' + userId + '/' + bookInfo.id).set({
+      'id': bookInfo.id,
+      'title': bookInfo.title,
+      'description': bookInfo.description || '',
+      'tag': 'leidos'
+    });
+}
 
 
 class BookRow extends React.Component {
   
-  constructor(props) {
-    super(props);
-    //console.log(props)
-
-    this.state = {
-      isLoggedIn: false,
-      user: null,
-      books: []
-    }
-
-  }
-
-   componentWillMount () {
-    var self = this;
-    store.subscribe(() =>
-    
-      self.setState({
-        isLoggedIn: store.getState().isLogginIn,
-        user: store.getState().user
-      })
-
-    )
-   }
-
-
   handleClickShowComplete (id, e) {
     browserHistory.push('/libro/' + id);
     e.preventDefault();
   }
 
+  handleClickOnSaveBook(userId, bookInfo, e) {
+    writeBookData(userId, bookInfo, e);
+  }
+
 
   render() {
-    const isLoggedIn = this.state.isLoggedIn;
-    const userName = this.state.user;
-    const userBooks = this.state.books;
+    const currentUser = firebase.auth().currentUser;
+    let saveButton = null;  
+
+    if(store.getState().isLogginIn) {
+      if (this.props.saved) {
+        saveButton = <a className="btn disabled">guardado</a>;
+      } else {
+        saveButton = <a onClick={() => this.handleClickOnSaveBook(currentUser.uid, {'id': this.props.id, 'title': this.props.title, 'description': this.props.description }, event)}>guardar</a>;
+      }
+    }
 
     return(
           <li className="row card">
@@ -63,15 +61,7 @@ class BookRow extends React.Component {
               </div>
               <Description value={this.props.description} limit="200" />
               <a onClick={() => this.handleClickShowComplete(this.props.id, event)}>Ver ficha completa</a>
-              {isLoggedIn ? (
-                  //<LogoutButton onClick={this.handleLogoutClick} />
-                  <a>guardar</a>
-                ) : (
-                 //<LoginButton onClick={this.handleLoginClick} />
-                 <a></a>
-                )}
-
-              
+              {saveButton}
             </div>
            
           </li>

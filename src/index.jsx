@@ -8,21 +8,7 @@ import BookInfo from './components/book-info'
 import BookDestacados from './components/book-destacados'
 import UserButton from './components/forms/user-button'
 import BookSidebar from './components/book-sidebar'
-
-
-
-function userState(state, action) {
-  if (action.type === 'setState') {
-    return {
-      'isLogginIn': action.values.isLogginIn || false,
-      'user': action.values.user || null,
-      'books': action.values.books || []
-    }
-  }
-}
-
-window.store = createStore(userState)
-
+import { store } from './actions'
 
 //firebase bbdd
 const config = {
@@ -36,38 +22,6 @@ const config = {
 
 firebase.initializeApp(config);
 
-
-function writeNewPost(uid, username, picture, title, body) {
-  // A post entry.
-  var postData = {
-    author: username,
-    uid: uid,
-    body: body,
-    title: title,
-    starCount: 0,
-    authorPic: picture
-  };
-
-  // Get a key for a new Post.
-  var newPostKey = firebase.database().ref().child('posts').push().key;
-
-  // Write the new post's data simultaneously in the posts list and the user's post list.
-  var updates = {};
-  updates['/posts/' + newPostKey] = postData;
-  updates['/user-posts/' + uid + '/' + newPostKey] = postData;
-
-  return firebase.database().ref().update(updates);
-}
-
-function writeBookData(userId, bookInfo) {
-  firebase.database().ref('users/' + userId + '/' + bookInfo.id).set({
-      'title': bookInfo.title,
-      'description': bookInfo.description,
-      'tag': 'leidos'
-    });
-}
-
-
 //initialize App
 class App extends React.Component {  
   constructor() {
@@ -78,50 +32,14 @@ class App extends React.Component {
       user: null,
       books: []
     }
-    /*firebase.auth().createUserWithEmailAndPassword('rperezdelatorre@gmail.com', 'pruebas1').catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // ...
-      console.log(error)
-    });*/
+  }
 
-
-   
-
+  componentDidUpdate() {
+    store.dispatch({type: 'SET_STATE', values: {'isLogginIn': this.state.isLoggedIn, 'user': this.state.user, 'books': this.state.books}})
   }
 
   componentWillMount () {
-    //Materialize.updateTextFields();
-    /*firebase.auth().createUserWithEmailAndPassword('rperezdelatorre2@gmail.com', 'pruebas1').catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // ...
-    });*/
-
-
-    /*firebase.auth().signInWithEmailAndPassword('rperezdelatorre@gmail.com', 'pruebas1').catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-
-      var user = firebase.auth().currentUser;
-
-       console.log(errorCode)
-
-
-    });*/
-
-
-    /*firebase.auth().signOut().then(function() {
-  // Sign-out successful.
-    }, function(error) {
-      // An error happened.
-    });
-    return;*/
-
-    var self= this;
+    const self = this;
 
     //guardar libro
     firebase.auth().onAuthStateChanged(function(user) {
@@ -132,27 +50,17 @@ class App extends React.Component {
             user: user
           })
           
-          store.dispatch({type: 'setState', values: {'isLogginIn': true, 'user': user}})
-          //writeNewPost(user.uid, user.displayName,'imagen','titulo','cuerpo')
-
-          const bookInfo = {
-            id: '1324',
-            title: 'titulo libro3',
-            description: 'descripcion'
-          }
-
-          writeBookData(user.uid, bookInfo);
-
-
+          store.dispatch({type: 'SET_STATE', values: {'isLogginIn': true, 'user': user}})
+          
           //recuperar libros segun usuario
-          var bookRef = firebase.database().ref('users/' + user.uid);
+          const bookRef = firebase.database().ref('users/' + user.uid);
           
           bookRef.on('value', function(snapshot) {
-            var arrBook = [];
-            var obj = snapshot.val();
-            var cont = 0;
+            let arrBook = [];
+            let obj = snapshot.val();
+            let cont = 0;
             
-            for (var value in obj) {
+            for (let value in obj) {
               arrBook.push(obj[value]);
               obj[value]['key'] = cont++;
             }
@@ -169,24 +77,9 @@ class App extends React.Component {
             user: null
           })
 
-        store.dispatch({type: 'setState', values: {'isLogginIn': false}})
+        store.dispatch({type: 'SET_STATE', values: {'isLogginIn': false, 'user': null}})
       }
     }); 
-
-
-    //const nameRef = firebase.database().ref().child('username');
-    //evento de firebase que se lanza cada vez que cambia un valor en la bbdd
-   /* nameRef.on('value', snapshot => {  
-      this.setState({
-        name: snapshot.val()
-      })
-     
-    })*/
-
- /* firebase.database().ref().set({
-    username: '111'
-  });*/
-
   }
 
   render() {
@@ -202,14 +95,11 @@ class App extends React.Component {
               <ul id="nav-mobile" className="right hide-on-med-and-down">
                 <li><Link to="/index">Home</Link></li>
                 <li><Link to="/destacados">Destacados</Link></li>
-                {isLoggedIn ? (
-                  //<LogoutButton onClick={this.handleLogoutClick} />
+                {isLoggedIn ? (  
                   <li><UserButton isLoggedIn="true" textValue={userName.displayName} /></li>
-                ) : (
-                 //<LoginButton onClick={this.handleLoginClick} />
+                ) : (               
                   <li><UserButton isLoggedIn="false" textValue="Inicia sesión" /></li>
-                )}
-                  
+                )}    
               </ul>
             </div>
           </nav>
