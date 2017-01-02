@@ -3,15 +3,8 @@
 
 
 
-
-.side-nav a {
-  height: auto;
-  line-height: 38px;
-}
-#warningText {
-  font-size: 12px;
-  line-height: 10px;
-  margin-top: 0;
+.moreFilters a {
+  line-height: 70px;
 }
 
 .label-info {
@@ -19,4 +12,18 @@
 }
 .no-margin_bottom {
   margin-bottom: 0;
+}
+
+.side-nav a {
+  height: auto;
+  line-height: 38px;
+}
+.side-nav .description p {
+  line-height: 20px;
+  font-size: 12px;
+}
+#warningText {
+  font-size: 12px;
+  line-height: 10px;
+  margin-top: 0;
 }

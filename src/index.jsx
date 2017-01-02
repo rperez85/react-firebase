@@ -5,7 +5,7 @@ import { createStore } from 'redux';
 import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router'
 import BookMain from './components/book-main'
 import BookInfo from './components/book-info'
-import BookDestacados from './components/book-destacados'
+//import BookDestacados from './components/book-destacados'
 import UserButton from './components/forms/user-button'
 import BookSidebar from './components/book-sidebar'
 import { store } from './actions'
@@ -94,7 +94,6 @@ class App extends React.Component {
               <a href="#" className="brand-logo">Logo</a>
               <ul id="nav-mobile" className="right hide-on-med-and-down">
                 <li><Link to="/index">Home</Link></li>
-                <li><Link to="/destacados">Destacados</Link></li>
                 {isLoggedIn ? (  
                   <li><UserButton isLoggedIn="true" textValue={userName.displayName} /></li>
                 ) : (               
@@ -118,7 +117,6 @@ ReactDOM.render((
     <Route path="/" component={App}>
       <IndexRoute component={BookMain} />
       <Route path="index" component={BookMain} />
-      <Route path="destacados" component={BookDestacados} />
       <Route path="libro/:id" component={BookInfo} />
     </Route>
 

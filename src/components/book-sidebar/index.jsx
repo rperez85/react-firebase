@@ -1,5 +1,6 @@
 import React from 'react'  
 import firebase from 'firebase';
+import BookDescription from '../book-description';
 
 
 function showError(root, errorMessage) {
@@ -73,7 +74,6 @@ class BookSidebar extends React.Component {
 
   render() {
 	const currentUser = firebase.auth().currentUser;
-
     return (
     	 <div id="slide-out" className="side-nav" /*style={divStyle}*/>
 		    
@@ -84,11 +84,20 @@ class BookSidebar extends React.Component {
 		     	  	<p className="subheader">{this.props.userName.email}</p>
 		     	  	<a onClick={() => this.handleLogoutClick()}>deslogar</a>
 		     	  	<a>modificar datos</a>
+		     	  	<h5>Libros guardados:</h5>
                   <ul>
 			        {
 			          this.props.userBooks.map((book) => {
 			          	
-			          	return <li key={ book.key }>{book.title} <span onClick={() => this.handleRemoveBookClick(currentUser.uid, book.id)}>(borrar)</span></li>
+			          	return <li className="row card" key={ book.key }>
+			          				<p><strong>{book.title}</strong> <span onClick={() => this.handleRemoveBookClick(currentUser.uid, book.id)}>(borrar)</span></p>
+				          			<div className="row">
+				          				<figure className="col s2"><img className="media-object img-thumbnail" width="60px" src={book.thumbnail} /></figure>
+				          				<div className="col s8 description">			          			
+						          			<BookDescription value={book.description} limit="100" />
+						          		</div>
+						          	</div>
+			          			</li>
 			         
 			          })
 			        }

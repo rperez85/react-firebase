@@ -1,25 +1,26 @@
 import React from 'react'  
 import BookAvatar from '../book-avatar'
+import BookDescription from '../book-description'
 import {browserHistory} from 'react-router';
 import { createStore } from 'redux';
 import firebase from 'firebase';
 import { store } from '../../actions'
 
 
-
 //helper
-function Description(props) {
+/*function Description(props) {
   const text = props.value ? props.value.substring(0, props.limit) + '...' : '';
   return (
     <p>{text}</p>
   );
-}
+}*/
 
 function writeBookData(userId, bookInfo) {
   firebase.database().ref('users/' + userId + '/' + bookInfo.id).set({
       'id': bookInfo.id,
       'title': bookInfo.title,
       'description': bookInfo.description || '',
+      'thumbnail': bookInfo.thumbnail || '',
       'tag': 'leidos'
     });
 }
@@ -45,7 +46,7 @@ class BookRow extends React.Component {
       if (this.props.saved) {
         saveButton = <a className="btn disabled">guardado</a>;
       } else {
-        saveButton = <a onClick={() => this.handleClickOnSaveBook(currentUser.uid, {'id': this.props.id, 'title': this.props.title, 'description': this.props.description }, event)}>guardar</a>;
+        saveButton = <a onClick={() => this.handleClickOnSaveBook(currentUser.uid, this.props)}>guardar</a>;
       }
     }
 
@@ -59,7 +60,7 @@ class BookRow extends React.Component {
                 <span className="badge left">año: {this.props.publishedDate}</span>
                 <span className="badge left">editorial: {this.props.publisher}</span>
               </div>
-              <Description value={this.props.description} limit="200" />
+              <BookDescription value={this.props.description} limit="200" />
               <a onClick={() => this.handleClickShowComplete(this.props.id, event)}>Ver ficha completa</a>
               {saveButton}
             </div>

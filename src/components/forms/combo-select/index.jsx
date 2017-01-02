@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 class ComboSelect extends React.Component {  
 
   componentDidMount () {
+    $('#' + this.props.id).val(this.props.initVal)
     $('#' + this.props.id).material_select();
   }
   
@@ -17,7 +18,7 @@ class ComboSelect extends React.Component {
           })
         }
       </select>
-      <label>Filtro</label>
+      <label>{this.props.label}</label>
     </div>
       )
   }
