@@ -61,8 +61,10 @@ class BookRow extends React.Component {
                 <span className="badge left">editorial: {this.props.publisher}</span>
               </div>
               <BookDescription value={this.props.description} limit="200" />
-              <a onClick={() => this.handleClickShowComplete(this.props.id, event)}>Ver ficha completa</a>
-              {saveButton}
+              <div className="row row-footer">
+                <a onClick={() => this.handleClickShowComplete(this.props.id, event)}>Ver ficha</a>
+                {saveButton}
+              </div>
             </div>
            
           </li>

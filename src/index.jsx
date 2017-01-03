@@ -59,7 +59,7 @@ class App extends React.Component {
             let arrBook = [];
             let obj = snapshot.val();
             let cont = 0;
-            
+
             for (let value in obj) {
               arrBook.push(obj[value]);
               obj[value]['key'] = cont++;
@@ -86,7 +86,6 @@ class App extends React.Component {
     const isLoggedIn = this.state.isLoggedIn;
     const userName = this.state.user;
     const userBooks = this.state.books;
-
     return (
         <div>
           <nav>

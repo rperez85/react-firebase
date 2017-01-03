@@ -1,5 +1,6 @@
 import React from 'react'  
 import firebase from 'firebase';
+import {browserHistory} from 'react-router';
 import BookDescription from '../book-description';
 
 
@@ -68,8 +69,17 @@ class BookSidebar extends React.Component {
 	    var errorCode = error.code;
 	    var errorMessage = error.message;
 	    showError($('#registrationUser').parent(), errorMessage);
-	});	
-	
+	});		
+  }
+
+  handleClickShowComplete (id, e) {
+  	$('body').sideNav('hide');
+
+    $.when(browserHistory.push('/libro/' + id)).then(function( ) {
+	  location.reload();
+	});
+   
+    e.preventDefault();
   }
 
   render() {
@@ -88,13 +98,17 @@ class BookSidebar extends React.Component {
                   <ul>
 			        {
 			          this.props.userBooks.map((book) => {
-			          	
+			          
 			          	return <li className="row card" key={ book.key }>
-			          				<p><strong>{book.title}</strong> <span onClick={() => this.handleRemoveBookClick(currentUser.uid, book.id)}>(borrar)</span></p>
+			          				<p><strong>{book.title}</strong></p>
 				          			<div className="row">
 				          				<figure className="col s2"><img className="media-object img-thumbnail" width="60px" src={book.thumbnail} /></figure>
 				          				<div className="col s8 description">			          			
 						          			<BookDescription value={book.description} limit="100" />
+						          			<div className="row row-sidebar-footer">
+						          				<a onClick={() => this.handleRemoveBookClick(currentUser.uid, book.id)}>Eliminar</a>
+						          				<a onClick={() => this.handleClickShowComplete(book.id, event)}>Ver ficha</a>
+						          			</div>
 						          		</div>
 						          	</div>
 			          			</li>

@@ -1,7 +1,5 @@
 import React from 'react'  
 
-
-
 class BookInfoDetail extends React.Component {
   
   render() {
