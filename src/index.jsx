@@ -11,11 +11,11 @@ import { store } from './actions'
 
 //firebase bbdd
 const config = {
-  apiKey: "AIzaSyBwaQQH3lmGJtJgHkPQp7W8z5Z4MpMT71w",
-  authDomain: "react-books.firebaseapp.com",
-  databaseURL: "https://react-books.firebaseio.com",
-  storageBucket: "react-books.appspot.com",
-  messagingSenderId: "734841775209"
+  apiKey: "apiKey",
+  authDomain: "authDomain",
+  databaseURL: "databaseURL",
+  storageBucket: "storageBucket",
+  messagingSenderId: "messagingSenderId"
 };
 
 
