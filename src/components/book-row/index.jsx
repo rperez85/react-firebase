@@ -1,10 +1,8 @@
 import React from 'react'  
 import BookAvatar from '../book-avatar'
 import BookDescription from '../book-description'
+import BookSaveButton from '../book-save-button'
 import {browserHistory} from 'react-router';
-import { createStore } from 'redux';
-import firebase from 'firebase';
-import { store } from '../../actions'
 
 
 //helper
@@ -14,16 +12,6 @@ import { store } from '../../actions'
     <p>{text}</p>
   );
 }*/
-
-function writeBookData(userId, bookInfo) {
-  firebase.database().ref('users/' + userId + '/' + bookInfo.id).set({
-      'id': bookInfo.id,
-      'title': bookInfo.title,
-      'description': bookInfo.description || '',
-      'thumbnail': bookInfo.thumbnail || '',
-      'tag': 'leidos'
-    });
-}
 
 
 class BookRow extends React.Component {
@@ -39,16 +27,6 @@ class BookRow extends React.Component {
 
 
   render() {
-    const currentUser = firebase.auth().currentUser;
-    let saveButton = null;  
-
-    if(store.getState().isLogginIn) {
-      if (this.props.saved) {
-        saveButton = <a className="btn disabled">guardado</a>;
-      } else {
-        saveButton = <a onClick={() => this.handleClickOnSaveBook(currentUser.uid, this.props)}>guardar</a>;
-      }
-    }
 
     return(
           <li className="row card">
@@ -63,7 +41,7 @@ class BookRow extends React.Component {
               <BookDescription value={this.props.description} limit="200" />
               <div className="row row-footer">
                 <a onClick={() => this.handleClickShowComplete(this.props.id, event)}>Ver ficha</a>
-                {saveButton}
+                <BookSaveButton bookInfo={this.props}/>
               </div>
             </div>
            

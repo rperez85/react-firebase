@@ -5,7 +5,6 @@ import { createStore } from 'redux';
 import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router'
 import BookMain from './components/book-main'
 import BookInfo from './components/book-info'
-//import BookDestacados from './components/book-destacados'
 import UserButton from './components/forms/user-button'
 import BookSidebar from './components/book-sidebar'
 import { store } from './actions'
@@ -41,7 +40,6 @@ class App extends React.Component {
   componentWillMount () {
     const self = this;
 
-    //guardar libro
     firebase.auth().onAuthStateChanged(function(user) {
 
       if (user) {
@@ -86,11 +84,11 @@ class App extends React.Component {
     const isLoggedIn = this.state.isLoggedIn;
     const userName = this.state.user;
     const userBooks = this.state.books;
+
     return (
         <div>
           <nav>
             <div className="nav-wrapper container">
-              <a href="#" className="brand-logo">Logo</a>
               <ul id="nav-mobile" className="right hide-on-med-and-down">
                 <li><Link to="/index">Home</Link></li>
                 {isLoggedIn ? (  

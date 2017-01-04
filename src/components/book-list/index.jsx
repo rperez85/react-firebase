@@ -9,46 +9,9 @@ function thumbnail (thumb) {
 }
 
 class BookList extends React.Component {
-  constructor(props) {
-    super(props);
-    //console.log(props)
-
-    this.state = {
-      books: [],
-      savedBooksIds: []
-    }
-  }
-
-  componentWillMount () {
-    const self = this;
-
-    let setUserState = function() {      
-      self.setState({
-        books: store.getState().books,
-        savedBooksIds: self.getSavedBooksIds(store.getState().books)
-      })
-    }
-
-    store.subscribe(() =>    
-      setUserState()
-    )
-
-    setUserState()
-   }
- 
-   getSavedBooksIds (userBooks) {
-      let booksSavedId = [];
-
-      for (var i = 0; i < userBooks.length; i++) {
-        booksSavedId.push(userBooks[i].id)
-      }
-
-      return booksSavedId;
-   }
-
+  
   render() {
-    const userSavedBooksIds = this.state.savedBooksIds;
-
+   
     return (    
       <ul>
         {
@@ -60,8 +23,7 @@ class BookList extends React.Component {
                                description={ book.volumeInfo.description } 
                                thumbnail={thumbnail(book.volumeInfo.imageLinks)}
                                authors={book.volumeInfo.authors}
-                               publisher={book.volumeInfo.publisher} 
-                               saved= {userSavedBooksIds.indexOf(book.id) !== -1}  />
+                               publisher={book.volumeInfo.publisher}   />
           })
         }
       </ul>

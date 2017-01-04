@@ -89,18 +89,20 @@ class BookSidebar extends React.Component {
 		    
 		     {this.props.isLoggedIn ? (
 		     	<div>
+					<h5>Datos de usuario:</h5>
 		     		<p className="subheader">{this.props.userName.displayName}</p>
-		     	  	<p className="divider"></p>
 		     	  	<p className="subheader">{this.props.userName.email}</p>
-		     	  	<a onClick={() => this.handleLogoutClick()}>deslogar</a>
-		     	  	<a>modificar datos</a>
+		     	  	<a className="login-btn" onClick={() => this.handleLogoutClick()}>deslogar</a>
+					<p className="divider"></p>
+		     	  	<br /><br />
+
 		     	  	<h5>Libros guardados:</h5>
                   <ul>
 			        {
 			          this.props.userBooks.map((book) => {
 			          
 			          	return <li className="row card" key={ book.key }>
-			          				<p><strong>{book.title}</strong></p>
+			          				<p className="book-title"><strong>{book.title}</strong></p>
 				          			<div className="row">
 				          				<figure className="col s2"><img className="media-object img-thumbnail" width="60px" src={book.thumbnail} /></figure>
 				          				<div className="col s8 description">			          			
@@ -112,7 +114,6 @@ class BookSidebar extends React.Component {
 						          		</div>
 						          	</div>
 			          			</li>
-			         
 			          })
 			        }
 			      </ul>

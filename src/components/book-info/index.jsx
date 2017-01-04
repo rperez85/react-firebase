@@ -9,10 +9,9 @@ class BookInfo extends React.Component {
     this.handleClickShowComplete();
   }
   
-  handleClickShowComplete () {
-   
+  handleClickShowComplete () { 
     $.getJSON("https://www.googleapis.com/books/v1/volumes/" + this.props.params.id, function(data){
-      let bookData = data.volumeInfo;
+      let bookData = data;
       ReactDOM.render(<BookLInfoDetail info={ bookData } />, document.getElementById('application'))     
     });
     
